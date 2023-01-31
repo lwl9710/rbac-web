@@ -13,7 +13,7 @@ interface Props {
   backgroundColor?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  width: "100%",
+  width: "calc(100% - 30px)",
   padding: 20,
   top: 0,
   radius: 8,

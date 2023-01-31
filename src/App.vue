@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import Zh_CN from "element-plus/lib/locale/lang/zh-cn";
+const locale = Zh_CN;
+</script>
 <template>
-<router-view></router-view>
+<ElConfigProvider :locale="locale">
+  <router-view></router-view>
+</ElConfigProvider>
 </template>
