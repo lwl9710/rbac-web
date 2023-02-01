@@ -28,9 +28,10 @@ const mode = ref(DialogType.ADD);
 function initValue(type: string = "string"): any {
   switch (type) {
     case "string": return "";
-    case "number": return 0;
-    case "object": return null;
+    case "select": return "";
+    case "radio": return "";
     case "file": return "";
+    case "datetime": return "";
   }
 }
 

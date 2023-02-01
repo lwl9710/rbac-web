@@ -6,7 +6,8 @@ export interface Column {
   label: string;
   slot?: boolean;
   dataType?: string | DataType;
-  pattern?: string;
+  format?: string;
+  valueFormat?: string;
   width?: string | number;
   hideAdd?: boolean;
   hideEdit?: boolean;
@@ -28,4 +29,11 @@ export interface Option {
   showAdd?: boolean;
   showDel?: boolean;
   columns: Array<Column>;
+}
+
+export interface Pagination {
+  total?: number;
+  pageSize?: number;
+  pageSizes?: Array<number>;
+  currentPage?: number;
 }

@@ -44,7 +44,8 @@ const tableOption: Ref<Option> = ref({
       label: "创建时间",
       prop: "createTime",
       dataType: "datetime",
-      pattern: "YYYY-MM-DD HH:mm:ss",
+      format: "YYYY-MM-DD HH:mm:ss",
+      valueFormat: "YYYY-MM-DD HH:mm:ss",
       hideEdit: true,
       hideAdd: true
     }
@@ -66,6 +67,11 @@ const tableData = ref([
     createTime: Date.now()
   }
 ]);
+const pagination = ref({
+  total: 2,
+  pageSize: 10,
+  currentPage: 1
+});
 
 const onDelRow = (data: any) => {
   console.log("删除行", data);
@@ -78,19 +84,28 @@ const onEditRow = ({ data, done }: any) => {
 
 function onAddRow({ data, done }: any) {
   console.log("添加行: ", data);
-  done();
+  // done();
 }
-
+function onSizeChange() {
+  console.log("页面变更");
+}
 </script>
 <template>
 <BasicContainer>
-  <crud-table :data="tableData" :option="tableOption" @delRow="onDelRow" @editRow="onEditRow" @addRow="onAddRow">
+  <crud-table
+    :data="tableData"
+    :option="tableOption"
+    v-model:total="pagination.total"
+    v-model:page-size="pagination.pageSize"
+    v-model:current-page="pagination.currentPage"
+    @delRow="onDelRow"
+    @editRow="onEditRow"
+    @addRow="onAddRow"
+    @sizeChange="onSizeChange"
+  >
     <template #avatar="{ row }">
       <img style="width: 50px; height: 50px" :src="row.avatar" alt="">
     </template>
   </crud-table>
 </BasicContainer>
 </template>
-<style lang="scss" scoped>
-
-</style>

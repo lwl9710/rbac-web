@@ -26,7 +26,8 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
       @update:modelValue="emits('update:modelValue', $event)"
       style="--el-date-editor-width: 100%"
       type="datetime"
-      format="YYYY-MM-DD HH:mm:ss"
+      :format="column.format"
+      :value-format="column.valueFormat"
       :placeholder="getPlaceholder(column, '选择')"
   />
   <el-select

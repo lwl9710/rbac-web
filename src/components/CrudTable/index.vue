@@ -1,18 +1,22 @@
 <script name="CrudTable" lang="ts" setup>
-import {Column, Option} from "./types";
+import { Column, Option, Pagination } from "./types";
 import { DEFAULT_ALIGN ,formatDateTime } from "./option";
 import { Ref } from "vue";
 import RowChangeDialog from "./components/RowChangeDialog.vue";
 
 interface Emits {
-  (e: 'current-change'): void;
-  (e: 'size-change'): void;
+  (e: 'current-change', v: number): void;
+  (e: 'size-change', v:number): void;
   (e: "add-row" | "edit-row" | "del-row", rawData: any): void;
 }
 
 interface Props {
   data: Array<StringObject>;
   option: Option;
+  total?: number,
+  pageSize?: number,
+  pageSizes?: Array<number>,
+  currentPage?: number
 }
 let $index = -1;
 
@@ -22,7 +26,11 @@ const props = withDefaults(defineProps<Props>(), {
   option: () => ({
     border: true,
     columns: []
-  })
+  }),
+  total: 0,
+  pageSize: 10,
+  currentPage: 1,
+  pageSizes: () => [10, 20, 50, 100]
 });
 // 表格Prop
 const tableProp = computed(() => {
@@ -72,6 +80,13 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
   }
   emits(eventType, eventData);
 }
+
+const handleSizeChange = () => {
+
+}
+const handleCurrentChange = () => {
+
+}
 </script>
 <template>
 <div class="crud-table">
@@ -87,7 +102,7 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
       <template v-if="column.slot" #default="{ name, ...slotProps }">
         <slot :name="column.prop" v-bind="slotProps"></slot>
       </template>
-      <template v-else-if="column.dataType === 'datetime'" #default="{ row }">{{ formatDateTime(row[column.prop], column.pattern) }}</template>
+      <template v-else-if="column.dataType === 'datetime'" #default="{ row }">{{ formatDateTime(row[column.prop], column.valueFormat) }}</template>
       <template v-else-if="showOperator && column.prop === 'operator'" #default="{ name, ...slotProps }">
         <el-button v-if="props.option.showEdit" @click="clickEditRow(slotProps)" icon="edit" link type="primary">编辑</el-button>
         <el-button v-if="props.option.showDel" @click="emits('del-row', slotProps)" icon="delete" link type="danger">删除</el-button>
@@ -95,6 +110,18 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
       </template>
     </el-table-column>
   </el-table>
+  <div class="crud-pagination">
+    <el-pagination
+        background
+        :current-page="props.currentPage"
+        :page-size="props.pageSize"
+        :page-sizes="props.pageSizes"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="props.total"
+        @size-change="emits('size-change', $event)"
+        @current-change="emits('current-change', $event)"
+    />
+  </div>
   <RowChangeDialog
       ref="rowDialog"
       :columns="tableColumns"
@@ -116,5 +143,11 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
       background-color: #fafafa
     }
   }
+}
+.crud-pagination {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>
