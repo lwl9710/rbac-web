@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { Column } from "../types";
+import { initValue } from "../option";
+
 import FormColumn from "./FormColumn.vue";
 import { Ref } from "vue";
 const enum DialogType {
@@ -24,16 +26,6 @@ const rules:Ref<Record<string, any>> = ref({});
 const formRef: Ref = ref(null);
 
 const mode = ref(DialogType.ADD);
-
-function initValue(type: string = "string"): any {
-  switch (type) {
-    case "string": return "";
-    case "select": return "";
-    case "radio": return "";
-    case "file": return "";
-    case "datetime": return "";
-  }
-}
 
 const resetRowData = (currentRowData?: any) => {
   const newRules: Record<string, any> = {};

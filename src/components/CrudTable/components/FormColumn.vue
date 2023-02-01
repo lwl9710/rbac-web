@@ -15,22 +15,26 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
 <template>
 <div class="form-column-item">
   <el-input
+    clearable
     v-if="column.dataType === 'string'"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     :placeholder="getPlaceholder(column)"
   ></el-input>
   <el-date-picker
+      clearable
       v-else-if="column.dataType === 'datetime'"
       :modelValue="props.modelValue"
       @update:modelValue="emits('update:modelValue', $event)"
-      style="--el-date-editor-width: 100%"
-      type="datetime"
+      :type="column.pickerType || column.dataType"
       :format="column.format"
       :value-format="column.valueFormat"
       :placeholder="getPlaceholder(column, '选择')"
+      :start-placeholder="column.startPlaceHolder || '请选择开始时间'"
+      :end-placeholder="column.endPlaceHolder || '请选择结束时间'"
   />
   <el-select
+    clearable
     v-else-if="column.dataType === 'select'"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
@@ -64,10 +68,13 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
 <style lang="scss" scoped>
 .form-column-item {
   width: 100%;
-  ::v-deep(.el-input__wrapper) {
-    display: flex;
-    box-sizing: border-box;
+  ::v-deep(.el-date-editor) {
     width: 100%;
+    > .el-input__wrapper{
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+    }
   }
   ::v-deep(.el-upload) {
     border: 1px dashed var(--el-border-color);

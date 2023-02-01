@@ -39,5 +39,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RowChangeDialog: typeof import('./../src/components/CrudTable/components/RowChangeDialog.vue')['default']
+    TableSearch: typeof import('./../src/components/CrudTable/components/TableSearch.vue')['default']
   }
 }

@@ -16,3 +16,14 @@ export function formatDateTime(value: string | number | Date, pattern: string = 
   pattern = pattern.replaceAll("ss", `${ getLengthInt(datetime.getSeconds()) }`);
   return pattern;
 }
+
+export function initValue(type: string = "string"): any {
+  switch (type) {
+    case "string": return "";
+    case "select": return "";
+    case "radio": return "";
+    case "file": return "";
+    case "datetime": return "";
+    case "datetimerange": return ["", ""]
+  }
+}

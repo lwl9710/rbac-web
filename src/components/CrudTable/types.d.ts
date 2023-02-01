@@ -1,11 +1,14 @@
-export type DataType = "string" | "datetime" | "select" | "radio" | "file";
+export type DataType = "string" | "datetime" | "select" | "radio" | "file" | "datetimerange";
 
 export interface Column {
+  clearable?: boolean;
+  search?: boolean;
   align?: string;
   prop: string;
   label: string;
   slot?: boolean;
   dataType?: string | DataType;
+  pickerType?: string;
   format?: string;
   valueFormat?: string;
   width?: string | number;
@@ -19,10 +22,13 @@ export interface Column {
   headers?: StringObject;
   data?: StringObject;
   name?: string;
-  rules?: Array<StringObject>
+  rules?: Array<StringObject>;
+  startPlaceHolder?: string;
+  endPlaceHolder?: string;
 }
 
 export interface Option {
+  clearable?: boolean;
   align?: string;
   border?: boolean;
   showEdit?: boolean;

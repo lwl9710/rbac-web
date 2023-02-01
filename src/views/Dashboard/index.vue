@@ -9,6 +9,7 @@ const tableOption: Ref<Option> = ref({
     {
       label: "姓名",
       prop: "name",
+      search: true,
       rules: [
         { required: true, message: "请输入姓名", trigger: "blur" }
       ]
@@ -16,18 +17,20 @@ const tableOption: Ref<Option> = ref({
     {
       label: "性别",
       prop: "gender",
+      search: true,
       rules: [
         { required: true, message: "请输入性别", trigger: "blur" }
       ],
       dataType: "select",
       selectList: [
-        { label: "女", value: 0 },
-        { label: "男", value: 1 }
+        { label: "男", value: 1 },
+        { label: "女", value: 0 }
       ]
     },
     {
       label: "年龄",
       prop: "age",
+      search: true,
       rules: [
         { required: true, message: "请输入年龄", trigger: "blur" }
       ],
@@ -43,7 +46,9 @@ const tableOption: Ref<Option> = ref({
     {
       label: "创建时间",
       prop: "createTime",
+      search: true,
       dataType: "datetime",
+      pickerType: "datetimerange",
       format: "YYYY-MM-DD HH:mm:ss",
       valueFormat: "YYYY-MM-DD HH:mm:ss",
       hideEdit: true,
@@ -72,7 +77,9 @@ const pagination = ref({
   pageSize: 10,
   currentPage: 1
 });
-
+const onSearch = (data: any) => {
+  console.log("触发搜索", data);
+}
 const onDelRow = (data: any) => {
   console.log("删除行", data);
 }
@@ -102,6 +109,7 @@ function onSizeChange() {
     @editRow="onEditRow"
     @addRow="onAddRow"
     @sizeChange="onSizeChange"
+    @search="onSearch"
   >
     <template #avatar="{ row }">
       <img style="width: 50px; height: 50px" :src="row.avatar" alt="">
