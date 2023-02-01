@@ -25,6 +25,7 @@ const addNavItem = () => {
   });
 }
 const clickToRoute = (nav: NavItem) => {
+  if(nav.name === route.name)return;
   addNavItem();
   router.replace({ name: nav.name, params: nav.params, query: nav.query })
   .then(() => {
