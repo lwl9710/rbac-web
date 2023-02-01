@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Column } from "../types";
 import { initValue } from "../option";
-
 import FormColumn from "./FormColumn.vue";
 import { Ref } from "vue";
 const enum DialogType {
@@ -62,7 +61,7 @@ const isShowColumn = (column: Column): boolean => {
 }
 
 const clickConfirm = () => {
-  formRef.value?.validate()
+  (formRef.value?.validate)()
   .then(() => {
     const formData = JSON.parse(JSON.stringify(rowData.value));
     switch (mode.value) {
