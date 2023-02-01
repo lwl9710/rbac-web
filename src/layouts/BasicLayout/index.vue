@@ -23,9 +23,7 @@ const cacheList = router.getRoutes().filter(route => route.meta.keepAlive).map(r
 .basic-layout {
   overflow: auto;
   display: flex;
-  width: 100vw;
   height: 100vh;
-  min-width: 800px;
   background-color: #EEE;
 }
 .v-enter-active,

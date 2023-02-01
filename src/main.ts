@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import router from "@/router";
 import pinia from "@/store";
 import App from "@/App.vue";
+import "@/styles/global.scss";
 import "@/styles/initialize.scss";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 

@@ -88,7 +88,7 @@ defineExpose<{ show(type: DialogType): void, hide(): void }>({
   v-model="showDialog"
   :close-on-click-modal="false"
   :destroy-on-close="true"
-  width="40%"
+  width="800px"
 >
   <el-form ref="formRef" :model="rowData" :rules="rules">
     <ul class="form-container">
