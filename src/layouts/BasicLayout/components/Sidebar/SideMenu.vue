@@ -14,11 +14,17 @@ const addNavItem = () => {
   });
 }
 const clickToRoute = (routeName: string) => {
+  if(routeName === route.name)return;
+  const cacheRoute = store.navList.find(nav => nav.name === routeName);
   addNavItem();
-  router.push({ name: routeName })
-  .then(() => {
-    addNavItem();
-  });
+  if(cacheRoute) {
+    router.replace({ name: cacheRoute.name, query: cacheRoute.query, params: cacheRoute.params });
+  } else {
+    router.push({ name: routeName })
+    .then(() => {
+      addNavItem();
+    });
+  }
 }
 </script>
 <template>

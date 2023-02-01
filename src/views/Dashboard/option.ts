@@ -1,6 +1,7 @@
 import { Option } from "@/components/CrudTable/types";
 
 export const TABLE_OPTION: Option = {
+  border: false,
   showAdd: true,
   showEdit: true,
   showDel: true,

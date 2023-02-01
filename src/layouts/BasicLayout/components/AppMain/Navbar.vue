@@ -16,6 +16,21 @@ const clickRemoveNav = (navItem: NavItem, index: number) => {
     store.removeNavItem(navItem);
   }
 }
+const addNavItem = () => {
+  store.addNavItem({
+    name: route.name as string,
+    title: route.meta.title as string || "--",
+    query: route.query,
+    params: route.params
+  });
+}
+const clickToRoute = (nav: NavItem) => {
+  addNavItem();
+  router.replace({ name: nav.name, params: nav.params, query: nav.query })
+  .then(() => {
+    addNavItem();
+  });
+}
 onMounted(() => {
   store.addNavItem({
     name: route.name as string,
@@ -29,7 +44,7 @@ onMounted(() => {
 <nav>
   <el-scrollbar>
     <ul class="nav-list">
-      <li class="nav-item" :class="{active: isActive(nav.name)}" v-for="(nav, index) in store.navList" :key="nav.name" @click="router.replace({ name: nav.name })">
+      <li class="nav-item" :class="{active: isActive(nav.name)}" v-for="(nav, index) in store.navList" :key="nav.name" @click="clickToRoute(nav)">
         <div class="status"></div>
         <div class="name">{{ nav.title }}</div>
         <div v-if="store.navList.length > 1" class="icon" @click.stop="clickRemoveNav(nav,index)">
