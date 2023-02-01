@@ -1,12 +1,14 @@
 export type DataType = "string" | "datetime" | "select" | "radio" | "file" | "datetimerange";
 
 export interface Column {
+  label: string;
+  prop: string;
+  type?: string,
   clearable?: boolean;
   search?: boolean;
   align?: string;
-  prop: string;
-  label: string;
   slot?: boolean;
+  headerSlot?: boolean;
   dataType?: string | DataType;
   pickerType?: string;
   format?: string;
@@ -28,6 +30,9 @@ export interface Column {
 }
 
 export interface Option {
+  leftSlot?: boolean;
+  selection?: boolean;
+  selectable?: (row: any, index: number) => boolean;
   clearable?: boolean;
   align?: string;
   border?: boolean;
@@ -35,6 +40,7 @@ export interface Option {
   showAdd?: boolean;
   showDel?: boolean;
   columns: Array<Column>;
+  [prop: string]: any
 }
 
 export interface Pagination {

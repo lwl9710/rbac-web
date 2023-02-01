@@ -6,8 +6,9 @@ import RowChangeDialog from "./components/RowChangeDialog.vue";
 import TableSearch from "./components/TableSearch.vue";
 
 interface Emits {
-  (e: 'search' | 'reset', v: any): void;
-  (e: 'current-change' | 'size-change', v: number): void;
+  (e: "select" | "select-all" | "selection-change", v: any): void;
+  (e: "search" | "reset", v: any): void;
+  (e: "current-change" | "size-change", v: number): void;
   (e: "add-row" | "edit-row" | "del-row", rawData: any): void;
 }
 
@@ -25,21 +26,21 @@ let $index = -1;
 const emits = defineEmits<Emits>();
 const props = withDefaults(defineProps<Props>(), {
   data: () => [],
-  option: () => ({
-    border: true,
-    columns: []
-  }),
+  option: () => ({ border: true, columns: [] }),
   pagination: true,
   total: 0,
   pageSize: 10,
   currentPage: 1,
   pageSizes: () => [10, 20, 50, 100]
 });
+const tableRef = ref({});
 // 表格Prop
 const tableProp = computed(() => {
+  const { clearable, align, border, showEdit, showAdd, showDel, columns, selection, leftSlot, selectable, ...rest  } = props.option;
   return {
+    ...rest,
     data: props.data,
-    border: props.option.border === undefined ? true : props.option.border
+    border: border === undefined ? true : border
   }
 });
 const showOperator = computed(() => {
@@ -64,6 +65,15 @@ const tableColumns = computed(() => {
     }, column);
   });
 });
+const getTableColumnProp = (column: Column) => {
+  return {
+    label: column.label,
+    prop: column.prop,
+    align: column.align,
+    width: column.width,
+    type: column.type
+  }
+}
 const rowDialog: Ref = ref(null);
 const clickAddRow = () => {
   rowDialog.value?.show(1);
@@ -84,19 +94,31 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
   }
   emits(eventType, eventData);
 }
+defineExpose({ tableRef: tableRef });
 </script>
 <template>
 <div class="crud-table">
   <TableSearch :columns="tableColumns" @search="emits('search', $event)" @reset="emits('reset', $event)"></TableSearch>
-  <div class="crud-operator" v-if="props.option.showAdd">
-    <el-button icon="plus" type="success" @click="clickAddRow">新增</el-button>
+  <div class="crud-operator" v-if="props.option.showAdd || props.option.leftSlot">
+    <el-button v-if="props.option.showAdd" icon="plus" type="success" @click="clickAddRow">新增</el-button>
+    <slot v-if="props.option.leftSlot" name="table-left"></slot>
   </div>
-  <el-table v-bind="tableProp">
+  <el-table
+    ref="tableRef"
+    v-bind="tableProp"
+    @select="emits('select', $event)"
+    @select-all="emits('select-all', $event)"
+    @selection-change="emits('selection-change', $event)"
+  >
+    <el-table-column v-if="props.option.selection" type="selection" :selectable="props.option.selectable"></el-table-column>
     <el-table-column
       v-for="(column, index) in tableColumns"
       :key="index"
-      v-bind="column"
+      v-bind="getTableColumnProp(column)"
     >
+      <template v-if="column.headerSlot" #header="{ name, ...slotProps }">
+        <slot :name="column.prop + '-header'"></slot>
+      </template>
       <template v-if="column.slot" #default="{ name, ...slotProps }">
         <slot :name="column.prop" v-bind="slotProps"></slot>
       </template>

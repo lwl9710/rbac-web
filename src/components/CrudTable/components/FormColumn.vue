@@ -15,14 +15,14 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
 <template>
 <div class="form-column-item">
   <el-input
-    clearable
+    :clearable="column.clearable"
     v-if="column.dataType === 'string'"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     :placeholder="getPlaceholder(column)"
   ></el-input>
   <el-date-picker
-      clearable
+      :clearable="column.clearable"
       v-else-if="column.dataType === 'datetime'"
       :modelValue="props.modelValue"
       @update:modelValue="emits('update:modelValue', $event)"
@@ -34,7 +34,7 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
       :end-placeholder="column.endPlaceHolder || '请选择结束时间'"
   />
   <el-select
-    clearable
+    :clearable="column.clearable"
     v-else-if="column.dataType === 'select'"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
