@@ -4,12 +4,18 @@ export interface Column {
   label: string;
   prop: string;
   type?: string,
+  nativeType?: "text" | "textarea";
+  minlength?: number;
+  maxlength?: number;
+  showWordLimit?: boolean;
+  resize?: "none" | "both" | "horizontal" | "vertical";
+  multiple?: boolean;
   clearable?: boolean;
   search?: boolean;
   align?: string;
   slot?: boolean;
   headerSlot?: boolean;
-  dataType?: string | DataType;
+  dataType?: DataType;
   pickerType?: string;
   format?: string;
   valueFormat?: string;
@@ -34,6 +40,7 @@ export interface Option {
   selection?: boolean;
   selectable?: (row: any, index: number) => boolean;
   clearable?: boolean;
+  emptyValue?: string,
   align?: string;
   border?: boolean;
   showEdit?: boolean;

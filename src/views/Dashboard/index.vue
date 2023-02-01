@@ -1,73 +1,18 @@
 <script name="Dashboard" lang="ts" setup>
-import { Option } from "@/components/CrudTable/types";
-import { Ref } from "vue";
-const tableOption: Ref<Option> = ref({
-  showAdd: true,
-  showEdit: true,
-  showDel: true,
-  columns: [
-    {
-      label: "姓名",
-      prop: "name",
-      search: true,
-      rules: [
-        { required: true, message: "请输入姓名", trigger: "blur" }
-      ]
-    },
-    {
-      label: "性别",
-      prop: "gender",
-      search: true,
-      rules: [
-        { required: true, message: "请输入性别", trigger: "blur" }
-      ],
-      dataType: "select",
-      selectList: [
-        { label: "男", value: 1 },
-        { label: "女", value: 0 }
-      ]
-    },
-    {
-      label: "年龄",
-      prop: "age",
-      search: true,
-      rules: [
-        { required: true, message: "请输入年龄", trigger: "blur" }
-      ],
-    },
-    {
-      label: "头像",
-      prop: "avatar",
-      dataType: "file",
-      accept: "image/*",
-      width: 120,
-      slot: true
-    },
-    {
-      label: "创建时间",
-      prop: "createTime",
-      search: true,
-      dataType: "datetime",
-      pickerType: "datetimerange",
-      format: "YYYY-MM-DD HH:mm:ss",
-      valueFormat: "YYYY-MM-DD HH:mm:ss",
-      hideEdit: true,
-      hideAdd: true
-    }
-  ]
-});
+import { TABLE_OPTION } from "./option";
+const tableOption = ref(TABLE_OPTION);
 const tableData = ref([
   {
     name: "小明",
     avatar: "https://img2.baidu.com/it/u=1385559459,94521354&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1675098000&t=21386f6dfa6bd270796954b514ba58f4",
-    gender: "男",
+    gender: 0,
     age: 23,
     createTime: Date.now()
   },
   {
     name: "小明",
     avatar: "https://img2.baidu.com/it/u=1385559459,94521354&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1675098000&t=21386f6dfa6bd270796954b514ba58f4",
-    gender: "男",
+    gender: 1,
     age: 25,
     createTime: Date.now()
   }

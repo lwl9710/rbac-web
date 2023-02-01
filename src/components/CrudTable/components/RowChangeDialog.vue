@@ -34,7 +34,7 @@ const resetRowData = (currentRowData?: any) => {
     case DialogType.ADD:
       props.columns.forEach((column: Column) => {
         if(column.hideAdd !== true) {
-          newRowData[column.prop] = initValue(column.dataType);
+          newRowData[column.prop] = initValue(column.dataType, column.multiple);
           if(column.rules) {
             newRules[column.prop] = column.rules;
           }
@@ -44,7 +44,8 @@ const resetRowData = (currentRowData?: any) => {
     case DialogType.EDIT:
       props.columns.forEach((column: Column) => {
         if(column.hideEdit !== true) {
-          newRowData[column.prop] = (currentRowData || {})[column.prop] || initValue(column.dataType);
+          const value = (currentRowData || {})[column.prop];
+          newRowData[column.prop] = value === undefined ? initValue(column.dataType) : value;
           if(column.rules) {
             newRules[column.prop] = column.rules;
           }

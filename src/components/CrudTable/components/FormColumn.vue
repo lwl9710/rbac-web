@@ -15,11 +15,16 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
 <template>
 <div class="form-column-item">
   <el-input
-    :clearable="column.clearable"
     v-if="column.dataType === 'string'"
+    :clearable="column.clearable"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     :placeholder="getPlaceholder(column)"
+    :type="column.nativeType"
+    :minlength="column.minlength"
+    :maxlength="column.maxlength"
+    :show-word-limit="column.showWordLimit"
+    :resize="column.resize"
   ></el-input>
   <el-date-picker
       :clearable="column.clearable"
@@ -34,14 +39,15 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
       :end-placeholder="column.endPlaceHolder || '请选择结束时间'"
   />
   <el-select
-    :clearable="column.clearable"
     v-else-if="column.dataType === 'select'"
+    :multiple="column.multiple"
+    :clearable="column.clearable"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     style="width: 100%"
     :placeholder="getPlaceholder(column, '选择')"
   >
-    <el-option v-for="item in column.selectList" :key="item.value" :label="item.label" :value="item.value" />
+    <el-option v-for="item in column.selectList" :key="item.value" v-bind="item" />
   </el-select>
   <el-radio-group
     v-else-if="column.dataType === 'radio'"

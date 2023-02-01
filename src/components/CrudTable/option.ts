@@ -17,10 +17,10 @@ export function formatDateTime(value: string | number | Date, pattern: string = 
   return pattern;
 }
 
-export function initValue(type: string = "string"): any {
+export function initValue(type: string = "string", isMultiple: boolean = false): any {
   switch (type) {
     case "string": return "";
-    case "select": return "";
+    case "select": return isMultiple ? [] : "";
     case "radio": return "";
     case "file": return "";
     case "datetime": return "";

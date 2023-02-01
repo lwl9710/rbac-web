@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
 const tableRef = ref({});
 // 表格Prop
 const tableProp = computed(() => {
-  const { clearable, align, border, showEdit, showAdd, showDel, columns, selection, leftSlot, selectable, ...rest  } = props.option;
+  const { clearable, align, border, showEdit, showAdd, showDel, columns, selection, leftSlot, emptyValue, selectable, ...rest  } = props.option;
   return {
     ...rest,
     data: props.data,
@@ -61,9 +61,16 @@ const tableColumns = computed(() => {
     return Object.assign({
       align: props.option.align || DEFAULT_ALIGN,
       dataType: "string",
-      clearable: props.option.clearable !== false
+      clearable: props.option.clearable !== false,
+      dicData: column.selectList?.reduce((o, next) => {
+        o[next.value] = next.label;
+        return o
+      }, {} as StringObject)
     }, column);
   });
+});
+const emptyValue = computed(() => {
+  return props.option.emptyValue === undefined ? "--" : props.option.emptyValue;
 });
 const getTableColumnProp = (column: Column) => {
   return {
@@ -119,14 +126,21 @@ defineExpose({ tableRef: tableRef });
       <template v-if="column.headerSlot" #header="{ name, ...slotProps }">
         <slot :name="column.prop + '-header'"></slot>
       </template>
+
       <template v-if="column.slot" #default="{ name, ...slotProps }">
         <slot :name="column.prop" v-bind="slotProps"></slot>
       </template>
-      <template v-else-if="column.dataType === 'datetime'" #default="{ row }">{{ formatDateTime(row[column.prop], column.valueFormat) }}</template>
       <template v-else-if="showOperator && column.prop === 'operator'" #default="{ name, ...slotProps }">
         <el-button v-if="props.option.showEdit" @click="clickEditRow(slotProps)" icon="edit" link type="primary">编辑</el-button>
         <el-button v-if="props.option.showDel" @click="emits('del-row', slotProps)" icon="delete" link type="danger">删除</el-button>
         <slot name="operator" v-bind="slotProps"></slot>
+      </template>
+      <template v-else-if="column.dataType === 'datetime'" #default="{ row }">{{ formatDateTime(row[column.prop], column.valueFormat) || emptyValue }}</template>
+      <template v-else-if="column.selectList && column.multiple" #default = "{ row }">
+        {{ row[column.prop].map(key => column.dicData[key]).join(",") || emptyValue }}
+      </template>
+      <template v-else-if="column.selectList && !column.multiple" #default = "{ row }">
+        {{ column.dicData[row[column.prop]] || emptyValue }}
       </template>
     </el-table-column>
   </el-table>
