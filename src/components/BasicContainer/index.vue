@@ -1,8 +1,3 @@
-<template>
-<div class="basic-container" :style="style">
-  <slot></slot>
-</div>
-</template>
 <script lang="ts" setup>
 import { getCssValue } from "@/utils/common";
 interface Props {
@@ -29,6 +24,11 @@ const style = computed(() => {
   }
 })
 </script>
+<template>
+  <div class="basic-container" :style="style">
+    <slot></slot>
+  </div>
+</template>
 <style lang="scss" scoped>
 .basic-container {
   box-sizing: border-box;
