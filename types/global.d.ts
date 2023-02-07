@@ -22,3 +22,9 @@ declare interface NavItem {
   params: StringObject,
   query: StringObject
 }
+
+declare interface CrudTableEventParam<T = any> {
+  $index?: number,
+  data: T,
+  done: () => void
+}

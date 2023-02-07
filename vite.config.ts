@@ -36,8 +36,18 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          chunkFileNames: "js/[name]-[hash].js",
           entryFileNames: "js/[name]-[hash].js",
+          chunkFileNames: ({ moduleIds }) => {
+            const chunkFileName = moduleIds[moduleIds.length - 1];
+            if(!chunkFileName.includes("/node_modules/") && /(index)\.[^.]+$/i.test(chunkFileName)) {
+              const chhunkFilePaths = chunkFileName.split("/");
+              let name = chhunkFilePaths[chhunkFilePaths.length - 2];
+              name = name[0].toLowerCase() + name.substring(1).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+              return `js/${name}.[hash].chunk.js`;
+            } else {
+              return "js/[name].[hash].chunk.js";
+            }
+          },
           assetFileNames({ name }) {
             if(/\.(jpe?g|png|gif|webp|svg)$/i.test(name)) {
               return "images/[name]-[hash].[ext]";
@@ -54,7 +64,6 @@ export default defineConfig(({ mode }) => {
             return "[name]-[hash].[ext]";
           },
           manualChunks: (filePath) => {
-            filePath = filePath.split("?")[0];
             if(/[\\/]element-plus[\\/]/i.test(filePath)) {
               return "element-plus";
             }
@@ -66,13 +75,6 @@ export default defineConfig(({ mode }) => {
             }
             if(/[\\/]pinia[\\/]/i.test(filePath)) {
               return "pinia";
-            }
-            /* index文件取上级目录 */
-            const IndexVueFileRegExp = /[\\/](?<name>[^\\/]+)[\\/]index\.vue$/i;
-            const result = filePath.match(IndexVueFileRegExp);
-            if(result) {
-              const filename = result.groups.name[0].toLowerCase() + result.groups.name.substring(1).replace(/[A-Z]/g, letter => `-${ letter.toLowerCase() }`);
-              return filename;
             }
             /* 其他依赖处理 */
             if(/[\\/]node_modules[\\/]/i.test(filePath)) {

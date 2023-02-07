@@ -38,4 +38,7 @@ declare module '@vue/runtime-core' {
     RowChangeDialog: typeof import('./../src/components/CrudTable/components/RowChangeDialog.vue')['default']
     TableSearch: typeof import('./../src/components/CrudTable/components/TableSearch.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

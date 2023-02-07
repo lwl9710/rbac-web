@@ -1,8 +1,13 @@
 <script lang="ts" setup>
 import { Ref } from "vue";
+import useUserStore from "@/store/user";
+const store = useUserStore();
 const router = useRouter();
 const formEl = ref(null);
-const form = ref({
+const form: Ref<{
+  username: string,
+  password: string
+}> = ref({
   username: "",
   password: ""
 });
@@ -15,11 +20,9 @@ const rules:Ref<Partial<any>>  = ref({
   ]
 })
 const clickSubmitForm = () => {
-  console.log(formEl.value);
   (formEl.value as any).validate()
-  .then(() => {
-    router.replace({ path: "/" });
-  })
+  .then(() => store.login(toRaw(form.value)))
+  .then(() => router.replace({ path: "/" }));
 }
 </script>
 <template>

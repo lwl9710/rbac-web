@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "@/utils/auth";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "",
@@ -6,6 +7,10 @@ const request = axios.create({
 });
 
 request.interceptors.request.use(config => {
+  const token = getToken();
+  if(token) {
+    config.headers["Authorization"] = token;
+  }
   return config;
 });
 

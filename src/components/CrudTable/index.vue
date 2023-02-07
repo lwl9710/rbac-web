@@ -8,7 +8,7 @@ import TableSearch from "./components/TableSearch.vue";
 interface Emits {
   (e: "select" | "select-all" | "selection-change", v: any): void;
   (e: "search" | "reset", v: any): void;
-  (e: "current-change" | "size-change", v: number): void;
+  (e: "current-change" | "size-change" | "update:current-page" | "update:page-size", v: number): void;
   (e: "add-row" | "edit-row" | "del-row", rawData: any): void;
 }
 
@@ -101,6 +101,14 @@ const clickConfirm = (eventType: "add-row" | "edit-row", data: any) => {
   }
   emits(eventType, eventData);
 }
+const onCurrentChange = (v: number) => {
+  emits("update:current-page", v);
+  emits("current-change", v);
+}
+const onPageSizeChange = (v: number) => {
+  emits("update:page-size", v);
+  emits("size-change", v);
+}
 defineExpose({ tableRef: tableRef });
 </script>
 <template>
@@ -150,10 +158,10 @@ defineExpose({ tableRef: tableRef });
         :current-page="props.currentPage"
         :page-size="props.pageSize"
         :page-sizes="props.pageSizes"
+        @update:current-page="onCurrentChange"
+        @update:page-size="onPageSizeChange"
         layout="total, sizes, prev, pager, next, jumper"
         :total="props.total"
-        @size-change="emits('size-change', $event)"
-        @current-change="emits('current-change', $event)"
     />
   </div>
   <RowChangeDialog
