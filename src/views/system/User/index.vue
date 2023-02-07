@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { tableOption } from "./options";
-import { reqGetPermissionList, reqAddPermission, reqUdatePermission, reqDelPermission } from "@/apis/permission";
+import { reqGetUserList, reqAddUser, reqUdateUser, reqDelUser } from "@/apis/user";
 import { Ref } from "vue";
 const tableLoading = ref(false);
 const option = ref(tableOption);
@@ -10,9 +10,9 @@ const params = ref({
   pageSize: 10
 });
 const total = ref(0);
-function getList() {
+function getList(searchContent: any = {}) {
   tableLoading.value = true;
-  reqGetPermissionList(toRaw(params.value))
+  reqGetUserList(toRaw(params.value))
       .then(res => {
         if(res.code === 200) {
           list.value = res.data.list;
@@ -25,7 +25,7 @@ function getList() {
 
 function onAddRow({ data, done }: CrudTableEventParam) {
   done();
-  reqAddPermission(data)
+  reqAddUser(data)
       .then(res => {
         if(res.code === 200) {
           ElMessage.success("添加成功");
@@ -37,7 +37,7 @@ function onAddRow({ data, done }: CrudTableEventParam) {
 function onEditRow({ $index = 0 , data, done }: CrudTableEventParam) {
   data.id = list.value[$index].id;
   done();
-  reqUdatePermission(data)
+  reqUdateUser(data)
       .then(res => {
         if(res.code === 200) {
           ElMessage.success("编辑成功");
@@ -47,13 +47,29 @@ function onEditRow({ $index = 0 , data, done }: CrudTableEventParam) {
 }
 
 function onDelRow({ row }: { row: any }) {
-  reqDelPermission(row.id)
+  reqDelUser(row.id)
       .then(res => {
         if(res.code === 200) {
           ElMessage.success("删除成功");
           getList();
         }
       });
+}
+
+function onReset() {
+  params.value = {
+    pageNum: 1,
+    pageSize: 10
+  };
+  getList();
+}
+
+function onSearch(data: any) {
+  params.value = Object.assign({
+    pageNum: 1,
+    pageSize: 10
+  }, data);
+  getList();
 }
 
 onMounted(() => {
@@ -73,6 +89,20 @@ onMounted(() => {
         @addRow="onAddRow"
         @sizeChange="getList"
         @currentChange="getList"
-    ></crud-table>
+        @search="onSearch"
+        @reset="onReset"
+    >
+      <template #avatar="{ row }">
+        <img class="avatar" :src="row.avatar" alt="">
+      </template>
+    </crud-table>
   </BasicContainer>
 </template>
+<style lang="scss" scoped>
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  vertical-align: top;
+}
+</style>

@@ -41,14 +41,20 @@ const routes: Array<RouteRecordRaw> = [
         path: "roleList",
         name: "RoleList",
         component: () => import("@/views/system/Role/index.vue"),
-        meta: { icon: "User", title: "角色管理" }
+        meta: { icon: "User", title: "角色列表" }
       },
       {
         path: "permissionList",
         name: "PermissionList",
         component: () => import("@/views/system/Permission/index.vue"),
-        meta: { icon: "Operation", title: "权限管理" }
+        meta: { icon: "Operation", title: "权限列表" }
       },
+      {
+        path: "userList",
+        name: "UserList",
+        component: () => import("@/views/system/User/index.vue"),
+        meta: { icon: "UserFilled", title: "用户列表" }
+      }
     ]
   },
   {
