@@ -25,6 +25,10 @@ export const tableOption = {
       prop: "createTime",
       hideEdit: true,
       hideAdd: true
+    },
+    {
+      label: "操作",
+      prop: "operator",
     }
   ]
 } as Option;

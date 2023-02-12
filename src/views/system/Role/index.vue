@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import UpdatePermissionDialog from "./components/UpdatePermissionDialog.vue";
 import { tableOption } from "./options";
 import { reqGetRoleList, reqAddRole, reqUdateRole, reqDelRole } from "@/apis/role";
 import { Ref } from "vue";
@@ -56,6 +57,10 @@ function onDelRow({ row }: { row: any }) {
   });
 }
 
+function clickShowDialog(row: any) {
+  console.log(row);
+}
+
 onMounted(() => {
   getList();
 })
@@ -73,6 +78,11 @@ onMounted(() => {
     @addRow="onAddRow"
     @sizeChange="getList"
     @currentChange="getList"
-  ></crud-table>
+  >
+    <template #operator="{ row }">
+      <el-button link type="success" icon="operation" @click="clickShowDialog(row)">权限</el-button>
+    </template>
+  </crud-table>
+  <UpdatePermissionDialog></UpdatePermissionDialog>
 </BasicContainer>
 </template>

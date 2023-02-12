@@ -15,55 +15,56 @@ const emits = defineEmits<{ (e: "update:modelValue", value: any): void }>();
 <template>
 <div class="form-column-item">
   <el-input
-    v-if="column.dataType === 'string'"
-    :clearable="column.clearable"
+    v-if="props.column.dataType === 'string'"
+    :clearable="props.column.clearable"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     :placeholder="getPlaceholder(column)"
-    :type="column.nativeType"
-    :minlength="column.minlength"
-    :maxlength="column.maxlength"
-    :show-word-limit="column.showWordLimit"
-    :resize="column.resize"
+    :type="props.column.nativeType"
+    :minlength="props.column.minlength"
+    :maxlength="props.column.maxlength"
+    :show-word-limit="props.column.showWordLimit"
+    :resize="props.column.resize"
   ></el-input>
   <el-date-picker
-      :clearable="column.clearable"
-      v-else-if="column.dataType === 'datetime'"
+      :clearable="props.column.clearable"
+      v-else-if="props.column.dataType === 'datetime'"
       :modelValue="props.modelValue"
       @update:modelValue="emits('update:modelValue', $event)"
-      :type="column.pickerType || column.dataType"
-      :format="column.format"
-      :value-format="column.valueFormat"
+      :type="props.column.pickerType || props.column.dataType"
+      :format="props.column.format"
+      :value-format="props.column.valueFormat"
       :placeholder="getPlaceholder(column, '选择')"
-      :start-placeholder="column.startPlaceHolder || '请选择开始时间'"
-      :end-placeholder="column.endPlaceHolder || '请选择结束时间'"
+      :start-placeholder="props.column.startPlaceHolder || '请选择开始时间'"
+      :end-placeholder="props.column.endPlaceHolder || '请选择结束时间'"
   />
   <el-select
-    v-else-if="column.dataType === 'select'"
-    :multiple="column.multiple"
-    :clearable="column.clearable"
+    v-else-if="props.column.dataType === 'select'"
+    :multiple="props.column.multiple"
+    :clearable="props.column.clearable"
+    :filterable="props.column.filterable"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
     style="width: 100%"
-    :placeholder="getPlaceholder(column, '选择')"
+    :placeholder="getPlaceholder(props.column, '选择')"
   >
-    <el-option v-for="item in column.selectList" :key="item.value" v-bind="item" />
+    <el-option v-for="item in props.column.selectList" :key="item.value" v-bind="item" />
   </el-select>
   <el-radio-group
-    v-else-if="column.dataType === 'radio'"
+    v-else-if="props.column.dataType === 'radio'"
     :modelValue="props.modelValue"
     @update:modelValue="emits('update:modelValue', $event)"
   >
-    <el-radio v-for="item in column.selectList" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
+    <el-radio v-for="item in props.column.selectList" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
   </el-radio-group>
   <el-upload
-      v-else-if="column.dataType === 'file'"
+      v-else-if="props.column.dataType === 'file'"
       class="avatar-uploader"
-      :name="column.name || 'file'"
-      :headers="column.headers"
-      :data="column.data"
-      :accept="column.accept || '*'"
-      :action="column.action"
+      :name="props.column.name || 'file'"
+      :headers="props.column.headers"
+      :data="props.column.data"
+      :accept="props.column.accept || '*'"
+      :action="props.column.action"
       :show-file-list="false"
   >
     <img v-if="props.modelValue" :src="props.modelValue" class="avatar" />

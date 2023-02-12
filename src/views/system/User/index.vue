@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { tableOption } from "./options";
+import { getTableOption } from "./options";
 import { reqGetUserList, reqAddUser, reqUdateUser, reqDelUser } from "@/apis/user";
+import { reqGetRoleList } from "@/apis/role";
 import { Ref } from "vue";
 const tableLoading = ref(false);
-const option = ref(tableOption);
+const option = ref(getTableOption());
 const list: Ref<any[]> = ref([]);
 const params = ref({
   pageNum: 1,
   pageSize: 10
 });
 const total = ref(0);
-function getList(searchContent: any = {}) {
+function getList() {
   tableLoading.value = true;
   reqGetUserList(toRaw(params.value))
       .then(res => {
@@ -20,6 +21,20 @@ function getList(searchContent: any = {}) {
         }
       }).finally(() => {
     tableLoading.value = false;
+  })
+}
+
+function getRoleList() {
+  reqGetRoleList({})
+  .then(res => {
+    if(res.code === 200) {
+      option.value = getTableOption(res.data.list.map(({ id, roleDescription }: any) => {
+        return {
+          label: roleDescription,
+          value: id
+        }
+      }));
+    }
   })
 }
 
@@ -74,6 +89,7 @@ function onSearch(data: any) {
 
 onMounted(() => {
   getList();
+  getRoleList();
 })
 </script>
 <template>

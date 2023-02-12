@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { tableOption } from "./options";
+import { getTableOption } from "./options";
 import { reqGetPermissionList, reqAddPermission, reqUdatePermission, reqDelPermission } from "@/apis/permission";
 import { Ref } from "vue";
 const tableLoading = ref(false);
-const option = ref(tableOption);
+const option = ref(getTableOption());
 const list: Ref<any[]> = ref([]);
 const params = ref({
   pageNum: 1,
@@ -20,6 +20,15 @@ function getList() {
         }
       }).finally(() => {
     tableLoading.value = false;
+  })
+}
+
+function getAllList() {
+  reqGetPermissionList({})
+  .then(res => {
+    if(res.code === 200) {
+      option.value = getTableOption(res.data.list.map(({id, description}: any) => ({ label: description, value: id })));
+    }
   })
 }
 
@@ -58,6 +67,7 @@ function onDelRow({ row }: { row: any }) {
 
 onMounted(() => {
   getList();
+  getAllList();
 })
 </script>
 <template>

@@ -1,13 +1,15 @@
 export type DataType = "string" | "datetime" | "select" | "radio" | "file" | "datetimerange";
 
 export interface Column {
+  hide?: boolean;
   label: string;
   prop: string;
   type?: string,
-  nativeType?: "text" | "textarea";
+  nativeType?: "text" | "textarea" | "password";
   minlength?: number;
   maxlength?: number;
   showWordLimit?: boolean;
+  filterable?: true,
   resize?: "none" | "both" | "horizontal" | "vertical";
   multiple?: boolean;
   clearable?: boolean;
