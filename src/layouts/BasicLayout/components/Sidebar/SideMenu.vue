@@ -1,7 +1,7 @@
 <script name="SideMenu" lang="ts" setup>
 import useSettingStore from "@/store/setting";
 import IconSpan from "./IconSpan.vue";
-const props = defineProps<{menu: MenuRoute}>();
+const props = defineProps<{menu: any}>();
 const route = useRoute();
 const router = useRouter();
 const store = useSettingStore();

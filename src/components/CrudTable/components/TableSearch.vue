@@ -2,12 +2,13 @@
 import { initValue } from "../option";
 import FormColumn from "./FormColumn.vue";
 import { Column } from "../types";
+import { Ref } from "vue";
 const props = defineProps<{
   columns: Array<Column>
 }>();
 const emits = defineEmits<{ (e: 'search' | 'reset', v: any): void }>();
 let duplicate = {};
-const searchContent = ref({});
+const searchContent: Ref = ref({});
 const searchColumns = computed(() => {
   let columns = JSON.parse(JSON.stringify(props.columns))
       .filter((column: Column) => column.search)
