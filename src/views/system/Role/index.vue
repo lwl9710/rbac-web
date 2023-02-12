@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import UpdatePermissionDialog from "./components/UpdatePermissionDialog.vue";
 import { tableOption } from "./options";
-import { reqGetRoleList, reqAddRole, reqUdateRole, reqDelRole } from "@/apis/role";
+import { reqGetRoleList, reqAddRole, reqUdateRole, reqDelRole, reqUpdatePermissions } from "@/apis/role";
 import { Ref } from "vue";
+import { reqFindPermissions } from "@/apis/permission";
 const tableLoading = ref(false);
 const option = ref(tableOption);
 const list: Ref<any[]> = ref([]);
@@ -10,6 +11,8 @@ const params = ref({
   pageNum: 1,
   pageSize: 10
 });
+let currentRow: any = {};
+const permissionDialogRef: Ref = ref(null);
 const total = ref(0);
 function getList() {
   tableLoading.value = true;
@@ -58,7 +61,23 @@ function onDelRow({ row }: { row: any }) {
 }
 
 function clickShowDialog(row: any) {
-  console.log(row);
+  reqFindPermissions(row.id || "")
+  .then(res => {
+    if(res.code == 200) {
+      currentRow = row;
+      permissionDialogRef.value.show(res.data.split(","));
+    }
+  });
+}
+
+function onConfirmPermissions({ data, done }: any) {
+  reqUpdatePermissions({ roleId: currentRow.id, permissions: data })
+  .then(res => {
+    if(res.code === 200) {
+      done();
+      ElMessage.success("更新成功");
+    }
+  })
 }
 
 onMounted(() => {
@@ -83,6 +102,6 @@ onMounted(() => {
       <el-button link type="success" icon="operation" @click="clickShowDialog(row)">权限</el-button>
     </template>
   </crud-table>
-  <UpdatePermissionDialog></UpdatePermissionDialog>
+  <UpdatePermissionDialog ref="permissionDialogRef" @confirm="onConfirmPermissions"></UpdatePermissionDialog>
 </BasicContainer>
 </template>

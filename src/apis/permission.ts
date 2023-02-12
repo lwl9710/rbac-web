@@ -19,3 +19,8 @@ export function reqUdatePermission(data: any) {
 export function reqDelPermission(id: string) {
   return request.delete(`/permission/delete/${id}`);
 }
+
+// 获取权限信息
+export function reqFindPermissions(id: string) {
+  return request.get(`/permission/find/${id}`);
+}

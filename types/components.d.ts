@@ -31,6 +31,7 @@ declare module '@vue/runtime-core' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FormColumn: typeof import('./../src/components/CrudTable/components/FormColumn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

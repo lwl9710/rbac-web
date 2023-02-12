@@ -19,3 +19,8 @@ export function reqUdateRole(data: any) {
 export function reqDelRole(id: string) {
   return request.delete(`/role/delete/${id}`);
 }
+
+// 更新角色权限
+export function reqUpdatePermissions(data: any) {
+  return request.patch("/role/updatePermission", data);
+}
