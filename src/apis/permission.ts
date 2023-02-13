@@ -17,10 +17,10 @@ export function reqUdatePermission(data: any) {
 
 // 删除权限
 export function reqDelPermission(id: string) {
-  return request.delete(`/permission/delete/${id}`);
+  return request.delete(`/permission/delete?id=${id}`);
 }
 
 // 获取权限信息
 export function reqFindPermissions(id: string) {
-  return request.get(`/permission/find/${id}`);
+  return request.get(`/permission/find?roleId=${id}`);
 }

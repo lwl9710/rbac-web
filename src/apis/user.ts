@@ -17,5 +17,5 @@ export function reqUdateUser(data: any) {
 
 // 删除角色
 export function reqDelUser(id: string) {
-  return request.delete(`/user/delete/${id}`);
+  return request.delete(`/user/delete?id=${id}`);
 }

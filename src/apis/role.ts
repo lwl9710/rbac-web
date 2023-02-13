@@ -17,7 +17,7 @@ export function reqUdateRole(data: any) {
 
 // 删除角色
 export function reqDelRole(id: string) {
-  return request.delete(`/role/delete/${id}`);
+  return request.delete(`/role/delete?id=${id}`);
 }
 
 // 更新角色权限

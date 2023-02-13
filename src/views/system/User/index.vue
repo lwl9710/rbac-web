@@ -62,13 +62,14 @@ function onEditRow({ $index = 0 , data, done }: CrudTableEventParam) {
 }
 
 function onDelRow({ row }: { row: any }) {
-  reqDelUser(row.id)
-      .then(res => {
-        if(res.code === 200) {
-          ElMessage.success("删除成功");
-          getList();
-        }
-      });
+  ElMessageBox.confirm("您确定删除吗?", "警告", { type: "warning" })
+  .then(() => reqDelUser(row.id))
+  .then(res => {
+    if(res.code === 200) {
+      ElMessage.success("删除成功");
+      getList();
+    }
+  });
 }
 
 function onReset() {
