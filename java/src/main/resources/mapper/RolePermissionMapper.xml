@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.project.mapper.RolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.basic.project.entities.RolePermission">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="roleId" column="role_id" jdbcType="CHAR"/>
+            <result property="permissions" column="permissions" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_id,permissions,
+        create_time,update_time
+    </sql>
+    <update id="updatePermissionsByRoleId">
+        UPDATE role_permission
+        SET permissions = #{permissions}
+        WHERE role_id = #{roleId}
+    </update>
+    <select id="findByRoleId" resultType="java.lang.String">
+        SELECT permissions
+        FROM role_permission
+        WHERE role_id = #{roleId}
+        LIMIT 1
+    </select>
+</mapper>

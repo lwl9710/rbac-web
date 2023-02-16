@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.project.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.basic.project.entities.Permission">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="CHAR"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,type,
+        url,description,update_time,
+        create_time
+    </sql>
+
+    <select id="selectPageList" resultType="com.basic.project.entities.Permission" parameterType="map">
+        SELECT <include refid="Base_Column_List" />
+        FROM permission
+        <if test="type != null">
+            WHERE type=#{type}
+        </if>
+        ORDER BY create_time DESC
+        <if test="pageNum != null">
+            <bind name="offset" value="(pageNum - 1) * pageSize"/>
+            LIMIT #{offset},#{pageSize}
+        </if>
+    </select>
+    <select id="countPermission" resultType="java.lang.Integer">
+        SELECT COUNT(id)
+        FROM permission
+        <if test="type != null">
+            WHERE type=#{type}
+        </if>
+    </select>
+    <select id="selectUrlByIds" parameterType="arraylist" resultType="java.lang.String">
+        SELECT url
+        FROM permission
+        WHERE id IN <foreach open="(" item="id" collection="ids" separator="," close=")">#{id}</foreach>
+    </select>
+    <select id="selectPermissionByIds" resultType="com.basic.project.entities.Permission">
+        SELECT <include refid="Base_Column_List" />
+        FROM permission
+        WHERE id IN <foreach open="(" item="id" collection="ids" separator="," close=")">#{id}</foreach>
+    </select>
+</mapper>

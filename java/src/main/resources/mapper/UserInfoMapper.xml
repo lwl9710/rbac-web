@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.project.mapper.UserInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.basic.project.entities.UserInfo">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="roleId" column="role_id" jdbcType="CHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="userDetailMap" type="com.basic.project.bo.UserDetailBO">
+        <id property="id" column="id" jdbcType="CHAR" />
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <association
+            property="role"
+            column="role_id"
+            javaType="com.basic.project.entities.Role"
+            select="com.basic.project.mapper.RoleMapper.findRoleById"
+        >
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="roleDescription" column="role_description" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_id,nickname,
+        avatar,update_time,create_time
+    </sql>
+    <select id="getUserDetailBO" resultMap="userDetailMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_info
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+    <select id="selectUserVoList" resultType="com.basic.project.vo.UserVo">
+        <bind name="offset" value="(pageNum - 1) * pageSize"/>
+        SELECT id, username, nickname, role_id, avatar , update_time, create_time
+        FROM user_info_role_view
+        <where>
+            <if test="nickname != null and nickname != ''">
+                AND nickname like concat("%", #{nickname}, "%")
+            </if>
+            <if test="roleId != null and roleId != ''">
+                AND role_id = #{roleId}
+            </if>
+            <if test="username != null and username !=''">
+                AND username like concat("%", #{username}, "%")
+            </if>
+        </where>
+        LIMIT #{offset},#{pageSize}
+    </select>
+    <select id="countUserVo" resultType="java.lang.Integer">
+        SELECT COUNT(id)
+        FROM user_info_role_view
+        <where>
+            <if test="nickname != null and nickname != ''">
+                AND nickname like concat("%", #{nickname}, "%")
+            </if>
+            <if test="roleId != null and roleId != ''">
+                AND role_id = #{roleId}
+            </if>
+            <if test="username != null and username !=''">
+                AND username like concat("%", #{username}, "%")
+            </if>
+        </where>
+    </select>
+</mapper>

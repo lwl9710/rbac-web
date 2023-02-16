@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.project.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.basic.project.entities.Role">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="roleDescription" column="role_description" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_name,role_description,
+        update_time,create_time
+    </sql>
+
+    <select id="selectPageList" resultType="com.basic.project.entities.Role" parameterType="map">
+        SELECT <include refid="Base_Column_List" />
+        FROM role
+        <if test="pageNum != null">
+            <bind name="offset" value="(pageNum - 1) * pageSize"/>
+            LIMIT #{offset},#{pageSize}
+        </if>
+    </select>
+    <select id="countRole" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM role
+    </select>
+    <select id="findRoleById" resultType="com.basic.project.entities.Role">
+        SELECT <include refid="Base_Column_List" /> FROM role where id = #{id} LIMIT 1
+    </select>
+    <select id="findRoleByUserInfoId" resultType="com.basic.project.entities.Role">
+        SELECT *
+        FROM role
+        WHERE id = (SELECT role_id FROM user_info WHERE id = #{userInfoId})
+    </select>
+</mapper>

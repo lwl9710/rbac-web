@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    # 数据库地址
+    url: jdbc:mysql://127.0.0.1:6666/www?useSSL=true&serverTimezone=GMT%2B8&useUnicode=true&character=UTF-8
+    username: root
+    password: 123456
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 8888
+      password: 123456
