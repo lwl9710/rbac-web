@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/system",
-    redirect: "/roleList",
+    redirect: "/system/roleList",
     component: BasicLayout,
     meta: { icon: "Setting", title: "系统管理" },
     children: [

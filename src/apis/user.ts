@@ -19,3 +19,8 @@ export function reqUdateUser(data: any) {
 export function reqDelUser(id: string) {
   return request.delete(`/user/delete?id=${id}`);
 }
+
+// 获取用户详情
+export function reqGetUserDetail() {
+  return request.get("/user/detail");
+}

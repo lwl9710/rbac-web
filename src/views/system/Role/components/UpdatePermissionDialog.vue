@@ -69,7 +69,7 @@ onMounted(() => {
     :close-on-click-modal="false"
     width="800px"
   >
-    <el-tree ref="treeRef" show-checkbox node-key="id" :data="permissions" :props="treeProps">
+    <el-tree ref="treeRef" show-checkbox :check-strictly="true" node-key="id" :data="permissions" :props="treeProps">
     </el-tree>
     <template #footer>
       <el-button @click="showDialog = false">取消</el-button>

@@ -23,8 +23,8 @@ function getList() {
   })
 }
 
-function getAllList() {
-  reqGetPermissionList({})
+function getMenuList() {
+  reqGetPermissionList({ type: 2 })
   .then(res => {
     if(res.code === 200) {
       option.value = getTableOption(res.data.list.map(({id, description}: any) => ({ label: description, value: id })));
@@ -68,7 +68,7 @@ function onDelRow({ row }: { row: any }) {
 
 onMounted(() => {
   getList();
-  getAllList();
+  getMenuList();
 })
 </script>
 <template>

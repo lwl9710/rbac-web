@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import useUserStore from "@/store/user";
 import useSettingStore from "@/store/setting";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 const store = useSettingStore();
+const userStore = useUserStore();
 const router = useRouter();
 const clickChangeExpand = () => {
   store.isCollapse = !store.isCollapse;
@@ -10,8 +12,10 @@ const clickLogout = () => {
   ElMessageBox.confirm("您确定退出登录吗?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
-    type: 'warning',
-  }).then(() => {
+    type: "warning",
+  }).then(() => userStore.logout())
+  .then(() => {
+    store.clearNavList();
     router.replace({ name: "Login" });
   });
 }

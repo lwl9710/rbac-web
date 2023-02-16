@@ -15,10 +15,15 @@ request.interceptors.request.use(config => {
 });
 
 request.interceptors.response.use(response => {
+  const responseBody = response.data;
+  if(responseBody.code === 401) {
+    ElMessage.warning(responseBody.message);
+  }
+
   if(response.request.meta?.isBody === false) {
     return response;
   } else {
-    return response.data;
+    return responseBody;
   }
 });
 
